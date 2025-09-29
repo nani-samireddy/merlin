@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
-	const containerRef = useRef(null);
+	const containerRef = useRef<HTMLDivElement>(null);
 	const [mermaidCode, setMermaidCode] = useState(`graph TD
     A[Start] --> B{Decision}
     B -->|Yes| C[Action 1]
@@ -44,11 +44,10 @@ export default function Home() {
 					// Render the diagram
 					const { svg } = await mermaid.render(id, mermaidCode);
 					containerRef.current.innerHTML = svg;
-				} catch (error) {
+				} catch (error: unknown) {
 					console.error("Mermaid rendering error:", error);
-					containerRef.current.innerHTML = `<div class="text-red-500 p-4 border border-red-300 rounded">
-            Error rendering diagram: ${error.message}
-          </div>`;
+					containerRef.current.innerHTML =
+						'<div class="text-red-500 p-4 border border-red-300 rounded">Error rendering diagram </div>';
 				}
 			}
 		};
@@ -91,7 +90,11 @@ export default function Home() {
 			}
 		} catch (error) {
 			console.error("Generation error:", error);
-			setError(`Failed to generate diagram: ${error.message}`);
+			const errorMessage =
+				error instanceof Error
+					? error.message
+					: "Unknown error occurred";
+			setError(`Failed to generate diagram: ${errorMessage}`);
 		} finally {
 			setIsGenerating(false);
 		}

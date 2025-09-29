@@ -1,11 +1,7 @@
 import { getProvider } from "@/lib/llm";
 
 export async function POST(req: Request) {
-	const {
-		prompt,
-		provider = "ollama",
-		options = { model: "gemma3:4b" },
-	} = await req.json();
+	const { prompt, provider, options } = await req.json();
 	const llm = getProvider(provider, options);
 
 	const code = await llm.generate(prompt);

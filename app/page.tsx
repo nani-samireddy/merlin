@@ -73,8 +73,8 @@ export default function Home() {
 				},
 				body: JSON.stringify({
 					prompt,
-					provider: "ollama",
-					options: { model: "gemma3:4b" },
+					provider: "gemini",
+					// options: { model: "gemma3:4b" },
 				}),
 			});
 
